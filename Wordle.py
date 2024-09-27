@@ -39,13 +39,19 @@ def record_input(gw):
         char =  char + gw.get_square_letter(row,col)
         col = col + 1
     return char
+    
 
 def compare_words(char, word, gw):
     for i in range(5):
         if char[i] == word[i]:
             gw.set_square_color(0,i,"green")
         else:
-            gw.show_message("Guess is incorrect")
+            for x in range(5):
+                if char[i] in word:
+                    gw.set_square_color(0,i,"yellow")
+                else:
+                    gw.set_square_color(0,i,"black")
+                
 
 def wordle():
     #creates the graphics window
@@ -53,16 +59,19 @@ def wordle():
 
     #get's the random 5 letter word (uses get_word_from_dictionary <- check_if_contains_rpt_letters)
     word = ''
-    word = get_word_from_dictionary(word)
+    word = get_word_from_dictionary(word).upper()
+    
+    gw.show_message(word)
     
     #checks a guess
     
     def enter_action():
-        char = record_input(gw)
+        char = record_input(gw).upper()
         compare_words(char, word, gw)
         
     gw.add_enter_listener(enter_action)
     
+
 # Startup boilerplate
 if __name__ == "__main__":
     wordle()
